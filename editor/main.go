@@ -2,6 +2,7 @@ package main
 
 import (
 	"context"
+	"editor/app"
 	"editor/cmd/messages"
 	"log"
 	"os"
@@ -10,9 +11,11 @@ import (
 )
 
 func main() {
+	app := app.New()
+	app.Init()
 	c := cli.Command{
 		Commands: []*cli.Command{
-			messages.New(),
+			messages.New(app),
 		},
 	}
 	if err := c.Run(context.Background(), os.Args); err != nil {
