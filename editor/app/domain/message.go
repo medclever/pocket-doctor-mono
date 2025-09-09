@@ -3,16 +3,16 @@ package domain
 import "editor/app/types"
 
 type message struct {
-	message string
+	data types.MessageData
 }
 
-func NewMessage(text string) types.Message {
+func NewMessage(data types.MessageData) types.Message {
 	message := message{
-		message: text,
+		data: data,
 	}
 	return &message
 }
 
 func (m *message) View() string {
-	return m.message
+	return m.data.Message
 }

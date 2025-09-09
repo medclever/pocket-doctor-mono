@@ -1,7 +1,8 @@
 package types
 
 type MessageRepository interface {
-	GetList(params MessagesGetListParams) []Message
+	RestoreAll() (messages []Message, err error)
+	PersistAll(messages []Message) error
 }
 
 type MessagesGetListParams struct{}
