@@ -12,7 +12,7 @@ func listCommand(app *app.App) *cli.Command {
 	return &cli.Command{
 		Name: "ls",
 		Action: func(ctx context.Context, cmd *cli.Command) error {
-			for _, message := range app.MessagesGetList() {
+			for _, message := range app.MessagesGetList().GetMessages() {
 				fmt.Println(message.View())
 			}
 			return nil

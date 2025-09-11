@@ -1,19 +1,21 @@
 package app
 
 import (
+	"editor/app/domain"
 	"editor/app/repositories"
 	"editor/app/types"
+	"errors"
 	"fmt"
 	"os"
 )
 
 type App struct {
 	messageRepository types.MessageRepository
-	messages          []types.Message
+	messages          types.Messages
 }
 
 func New() *App {
-	messageRepository := repositories.NewMessageRepo("./data/messages.ru.json")
+	messageRepository := repositories.NewMessageRepo("./data")
 	app := App{
 		messageRepository: messageRepository,
 	}
@@ -26,8 +28,24 @@ func (a *App) Init() {
 	a.messages = messages
 }
 
-func (a *App) MessagesGetList() []types.Message {
+func (a *App) Persist() (err error) {
+	errs := []error{}
+
+	err = a.messageRepository.PersistAll(a.messages)
+	errs = append(errs, err)
+
+	if len(errs) > 0 {
+		return errors.Join(errs...)
+	}
+	return
+}
+
+func (a *App) MessagesGetList() types.Messages {
 	return a.messages
+}
+
+func (a *App) MessagesAdd(message string) {
+	a.messages.Add(domain.NewMessageFromText(message))
 }
 
 func PrintErrorAndExit(err error) {

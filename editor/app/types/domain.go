@@ -8,4 +8,11 @@ type MessageData struct {
 
 type Message interface {
 	View() string
+	ExportData() MessageData
+}
+
+type Messages interface {
+	Add(message Message)
+	GetMessages() []Message
+	ExportData() []MessageData
 }

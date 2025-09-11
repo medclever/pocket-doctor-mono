@@ -11,6 +11,7 @@ func New(app *app.App) *cli.Command {
 		Name: "messages",
 		Commands: []*cli.Command{
 			listCommand(app),
+			addCommand(app),
 		},
 	}
 }
