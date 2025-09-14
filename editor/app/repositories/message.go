@@ -3,23 +3,31 @@ package repositories
 import (
 	"editor/app/domain"
 	"editor/app/types"
+	"editor/app/utils"
 	"encoding/json"
+	"fmt"
 	"os"
 )
 
 type messageRepository struct {
-	file string
+	dataDir string
+	path    string
 }
 
-func NewMessageRepo(file string) types.MessageRepository {
+func NewMessageRepo(dataDir string) types.MessageRepository {
 	repo := messageRepository{
-		file: file,
+		dataDir: dataDir,
+		path:    fmt.Sprintf("%s/messages.json", dataDir),
 	}
 	return &repo
 }
 
-func (r *messageRepository) RestoreAll() (messages []types.Message, err error) {
-	data, err := os.ReadFile(r.file)
+func (r *messageRepository) RestoreAll() (messages types.Messages, err error) {
+	entyties := []types.Message{}
+	if !utils.CheckFile(r.path) {
+		return domain.NewMessages(entyties), nil
+	}
+	data, err := os.ReadFile(r.path)
 	if err != nil {
 		return
 	}
@@ -29,11 +37,17 @@ func (r *messageRepository) RestoreAll() (messages []types.Message, err error) {
 		return
 	}
 	for _, messageData := range messagesData {
-		messages = append(messages, domain.NewMessage(messageData))
+		entyties = append(entyties, domain.NewMessage(messageData))
 	}
-	return
+	return domain.NewMessages(entyties), nil
 }
 
-func (r *messageRepository) PersistAll(messages []types.Message) error {
-	return nil
+func (r *messageRepository) PersistAll(messages types.Messages) (err error) {
+	utils.CreateFileIfNotExist(r.path)
+	data, err := json.Marshal(messages.ExportData())
+	if err != nil {
+		return
+	}
+	err = os.WriteFile(r.path, data, 0644)
+	return
 }
