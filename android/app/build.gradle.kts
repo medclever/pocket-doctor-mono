@@ -4,11 +4,11 @@ plugins {
 }
 
 android {
-    namespace = "com.example.pocketdoctor_free"
+    namespace = "com.medclever.pocketdoctor_free"
     compileSdk = 36
 
     defaultConfig {
-        applicationId = "com.example.pocketdoctor_free"
+        applicationId = "com.medclever.pocketdoctor_free"
         minSdk = 24
         targetSdk = 36
         versionCode = 1

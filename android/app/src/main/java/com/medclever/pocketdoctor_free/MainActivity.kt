@@ -1,4 +1,4 @@
-package com.example.pocketdoctor_free
+package com.medclever.pocketdoctor_free
 
 import android.os.Bundle
 import android.widget.ArrayAdapter
