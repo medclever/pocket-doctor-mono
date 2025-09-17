@@ -11,14 +11,14 @@ type message struct {
 	data types.MessageData
 }
 
-func NewMessage(data types.MessageData) types.Message {
+func InitMessage(data types.MessageData) types.Message {
 	message := message{
 		data: data,
 	}
 	return &message
 }
 
-func NewMessageFromText(text string) types.Message {
+func CreateMessage(text string) types.Message {
 	message := message{
 		data: types.MessageData{
 			MessageId:  utils.GenereateUid(10),
@@ -30,11 +30,11 @@ func NewMessageFromText(text string) types.Message {
 }
 
 func (m *message) View() string {
-	text := fmt.Sprintf("id: %s date_create: %s\n", m.data.MessageId, m.data.DateCreate)
+	text := fmt.Sprintf("id: %s, date_create: %s\n", m.data.MessageId, m.data.DateCreate)
 	text += m.data.Message
 	return text
 }
 
-func (m *message) ExportData() types.MessageData {
-	return m.data
+func (m *message) ExportData() []types.MessageData {
+	return []types.MessageData{m.data}
 }

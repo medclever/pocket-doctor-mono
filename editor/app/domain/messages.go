@@ -6,7 +6,7 @@ type messages struct {
 	messages []types.Message
 }
 
-func NewMessages(entyties []types.Message) types.Messages {
+func InitMessages(entyties []types.Message) types.Messages {
 	return &messages{
 		messages: entyties,
 	}
@@ -23,7 +23,7 @@ func (m *messages) Add(message types.Message) {
 func (m *messages) ExportData() []types.MessageData {
 	result := make([]types.MessageData, 0, len(m.messages))
 	for _, message := range m.messages {
-		result = append(result, message.ExportData())
+		result = append(result, message.ExportData()...)
 	}
 	return result
 }

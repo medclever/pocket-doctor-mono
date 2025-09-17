@@ -5,4 +5,7 @@ type MessageRepository interface {
 	PersistAll(messages Messages) error
 }
 
-type MessagesGetListParams struct{}
+type LanguageRepository interface {
+	RestoreAll() (languages Languages, err error)
+	PersistAll(languages Languages) error
+}

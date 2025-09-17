@@ -3,6 +3,7 @@ package main
 import (
 	"context"
 	"editor/app"
+	"editor/cmd/languages"
 	"editor/cmd/messages"
 	"log"
 	"os"
@@ -16,6 +17,7 @@ func main() {
 	c := cli.Command{
 		Commands: []*cli.Command{
 			messages.New(app),
+			languages.New(app),
 		},
 	}
 	if err := c.Run(context.Background(), os.Args); err != nil {

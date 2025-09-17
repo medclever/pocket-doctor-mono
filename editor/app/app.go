@@ -10,14 +10,19 @@ import (
 )
 
 type App struct {
-	messageRepository types.MessageRepository
-	messages          types.Messages
+	messages           types.Messages
+	messageRepository  types.MessageRepository
+	languages          types.Languages
+	languageRepository types.LanguageRepository
 }
 
 func New() *App {
-	messageRepository := repositories.NewMessageRepo("./data")
+	rootPath := "./data"
+	messageRepository := repositories.NewMessageRepo(rootPath)
+	languageRepository := repositories.NewLanguageRepo(rootPath)
 	app := App{
-		messageRepository: messageRepository,
+		messageRepository:  messageRepository,
+		languageRepository: languageRepository,
 	}
 	return &app
 }
@@ -26,12 +31,19 @@ func (a *App) Init() {
 	messages, err := a.messageRepository.RestoreAll()
 	PrintErrorAndExit(err)
 	a.messages = messages
+
+	languages, err := a.languageRepository.RestoreAll()
+	PrintErrorAndExit(err)
+	a.languages = languages
 }
 
 func (a *App) Persist() (err error) {
 	errs := []error{}
 
 	err = a.messageRepository.PersistAll(a.messages)
+	errs = append(errs, err)
+
+	err = a.languageRepository.PersistAll(a.languages)
 	errs = append(errs, err)
 
 	if len(errs) > 0 {
@@ -45,7 +57,15 @@ func (a *App) MessagesGetList() types.Messages {
 }
 
 func (a *App) MessagesAdd(message string) {
-	a.messages.Add(domain.NewMessageFromText(message))
+	a.messages.Add(domain.CreateMessage(message))
+}
+
+func (a *App) LanguagesGetList() types.Languages {
+	return a.languages
+}
+
+func (a *App) LanguagesAdd(code, name string) {
+	a.languages.Add(domain.CreateLanguage(code, name))
 }
 
 func PrintErrorAndExit(err error) {
