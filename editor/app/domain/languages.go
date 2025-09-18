@@ -12,6 +12,19 @@ func InitLanguages(entyties []types.Language) types.Languages {
 	}
 }
 
+func (m *languages) HasByCode(languageCode string) bool {
+	return m.FindByCode(languageCode) != nil
+}
+
+func (m *languages) FindByCode(languageCode string) types.Language {
+	for _, language := range m.languages {
+		if language.GetCode() == languageCode {
+			return language
+		}
+	}
+	return nil
+}
+
 func (m *languages) GetLanguages() []types.Language {
 	return m.languages
 }

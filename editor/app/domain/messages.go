@@ -12,6 +12,15 @@ func InitMessages(entyties []types.Message) types.Messages {
 	}
 }
 
+func (m *messages) FindById(messageId string) types.Message {
+	for _, message := range m.messages {
+		if message.GetId() == messageId {
+			return message
+		}
+	}
+	return nil
+}
+
 func (m *messages) GetMessages() []types.Message {
 	return m.messages
 }

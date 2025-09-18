@@ -23,9 +23,8 @@ func NewMessageRepo(dataDir string) types.MessageRepository {
 }
 
 func (r *messageRepository) RestoreAll() (messages types.Messages, err error) {
-	entyties := []types.Message{}
 	if !utils.CheckFile(r.path) {
-		return domain.InitMessages(entyties), nil
+		return domain.InitMessages([]types.Message{}), nil
 	}
 	data, err := os.ReadFile(r.path)
 	if err != nil {
@@ -36,10 +35,17 @@ func (r *messageRepository) RestoreAll() (messages types.Messages, err error) {
 	if err != nil {
 		return
 	}
+	messages = domain.InitMessages(nil)
 	for _, messageData := range messagesData {
-		entyties = append(entyties, domain.InitMessage(messageData))
+		item := messages.FindById(messageData.MessageId)
+		if item != nil {
+			item.InitLanguage(messageData)
+			continue
+		}
+		item = domain.InitMessage(messageData)
+		messages.Add(item)
 	}
-	return domain.InitMessages(entyties), nil
+	return messages, nil
 }
 
 func (r *messageRepository) PersistAll(messages types.Messages) (err error) {

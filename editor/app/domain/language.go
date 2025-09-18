@@ -28,6 +28,10 @@ func CreateLanguage(code, name string) types.Language {
 	return &language
 }
 
+func (m *language) GetCode() string {
+	return m.data.Code
+}
+
 func (m *language) View() string {
 	text := fmt.Sprintf("code: %s, name: %s, date_create: %s\n", m.data.Code, m.data.Name, m.data.DateCreate)
 	return text

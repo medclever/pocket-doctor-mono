@@ -2,9 +2,10 @@ package app
 
 import (
 	"editor/app/domain"
+	"editor/app/errors"
 	"editor/app/repositories"
 	"editor/app/types"
-	"errors"
+	lib_errors "errors"
 	"fmt"
 	"os"
 )
@@ -47,7 +48,7 @@ func (a *App) Persist() (err error) {
 	errs = append(errs, err)
 
 	if len(errs) > 0 {
-		return errors.Join(errs...)
+		return lib_errors.Join(errs...)
 	}
 	return
 }
@@ -56,8 +57,32 @@ func (a *App) MessagesGetList() types.Messages {
 	return a.messages
 }
 
-func (a *App) MessagesAdd(message string) {
-	a.messages.Add(domain.CreateMessage(message))
+func (a *App) MessagesAdd(languageCode, message string) error {
+	hasLanguage := a.languages.FindByCode(languageCode)
+	if hasLanguage != nil {
+		return fmt.Errorf("%w with code = %s", errors.NotFindLanguage, languageCode)
+	}
+	item := domain.CreateMessage(languageCode, message)
+	a.messages.Add(item)
+	return nil
+}
+
+func (a *App) MessagesTranslate(messageId, languageCode, message string) error {
+	hasLanguage := a.languages.FindByCode(languageCode)
+	if hasLanguage != nil {
+		return fmt.Errorf("%w with code = %s", errors.NotFindLanguage, languageCode)
+	}
+	item := a.messages.FindById(messageId)
+	if item == nil {
+		a.MessagesAdd(languageCode, message)
+		return nil
+	}
+	hasTranslate := item.HasTranslate(languageCode)
+	if hasTranslate {
+		return fmt.Errorf("%w with code = %s", errors.MessageHasTranslate, languageCode)
+	}
+	item.AddLanguage(languageCode, message)
+	return nil
 }
 
 func (a *App) LanguagesGetList() types.Languages {
