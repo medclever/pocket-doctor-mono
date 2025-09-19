@@ -58,9 +58,9 @@ func (a *App) MessagesGetList() types.Messages {
 }
 
 func (a *App) MessagesAdd(languageCode, message string) error {
-	hasLanguage := a.languages.FindByCode(languageCode)
-	if hasLanguage != nil {
-		return fmt.Errorf("%w with code = %s", errors.NotFindLanguage, languageCode)
+	hasLanguage := a.languages.HasByCode(languageCode)
+	if !hasLanguage {
+		return fmt.Errorf("%w. code = %s", errors.NotFindLanguage, languageCode)
 	}
 	item := domain.CreateMessage(languageCode, message)
 	a.messages.Add(item)
@@ -70,7 +70,7 @@ func (a *App) MessagesAdd(languageCode, message string) error {
 func (a *App) MessagesTranslate(messageId, languageCode, message string) error {
 	hasLanguage := a.languages.FindByCode(languageCode)
 	if hasLanguage != nil {
-		return fmt.Errorf("%w with code = %s", errors.NotFindLanguage, languageCode)
+		return fmt.Errorf("%w. code = %s", errors.NotFindLanguage, languageCode)
 	}
 	item := a.messages.FindById(messageId)
 	if item == nil {
@@ -79,7 +79,7 @@ func (a *App) MessagesTranslate(messageId, languageCode, message string) error {
 	}
 	hasTranslate := item.HasTranslate(languageCode)
 	if hasTranslate {
-		return fmt.Errorf("%w with code = %s", errors.MessageHasTranslate, languageCode)
+		return fmt.Errorf("%w. code = %s", errors.MessageHasTranslate, languageCode)
 	}
 	item.AddLanguage(languageCode, message)
 	return nil
