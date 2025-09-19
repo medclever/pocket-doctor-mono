@@ -67,9 +67,9 @@ func (a *App) MessagesAdd(languageCode, message string) error {
 	return nil
 }
 
-func (a *App) MessagesTranslate(messageId, languageCode, message string) error {
-	hasLanguage := a.languages.FindByCode(languageCode)
-	if hasLanguage != nil {
+func (a *App) MessagesTranslate(languageCode, messageId, message string) error {
+	hasLanguage := a.languages.HasByCode(languageCode)
+	if !hasLanguage {
 		return fmt.Errorf("%w. code = %s", errors.NotFindLanguage, languageCode)
 	}
 	item := a.messages.FindById(messageId)

@@ -38,7 +38,9 @@ func (m *message) InitLanguage(data types.MessageData) {
 }
 
 func (m *message) AddLanguage(languageCode, text string) {
-	m.items = append(m.items, createMessage(languageCode, text))
+	item := createMessage(languageCode, text)
+	item.MessageId = m.id
+	m.items = append(m.items, item)
 }
 
 func (m *message) HasTranslate(languageCode string) bool {
