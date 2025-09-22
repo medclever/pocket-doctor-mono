@@ -1,5 +1,7 @@
 package types
 
+import "time"
+
 // Message
 type MessageData struct {
 	MessageId    string `json:"message_id"`
@@ -11,7 +13,7 @@ type Message interface {
 	GetId() string
 	InitLanguage(data MessageData)
 	HasTranslate(languageCode string) bool
-	AddLanguage(languageCode, text string)
+	AddLanguage(languageCode, text string, now time.Time)
 	View() string
 	ExportData() []MessageData
 }

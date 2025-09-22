@@ -5,12 +5,14 @@ import (
 	"editor/app/errors"
 	"editor/app/repositories"
 	"editor/app/types"
+	"editor/app/utils"
 	lib_errors "errors"
 	"fmt"
 	"os"
 )
 
 type App struct {
+	timeNow            types.TimeNow
 	messages           types.Messages
 	messageRepository  types.MessageRepository
 	languages          types.Languages
@@ -22,10 +24,18 @@ func New() *App {
 	messageRepository := repositories.NewMessageRepo(rootPath)
 	languageRepository := repositories.NewLanguageRepo(rootPath)
 	app := App{
+		timeNow:            utils.NewTimeNowDefault(),
+		messages:           domain.InitMessages([]types.Message{}),
+		languages:          domain.InitLanguages([]types.Language{}),
 		messageRepository:  messageRepository,
 		languageRepository: languageRepository,
 	}
 	return &app
+}
+
+func (a *App) SetTimeNow(timeNow types.TimeNow) *App {
+	a.timeNow = timeNow
+	return a
 }
 
 func (a *App) Init() {
@@ -53,8 +63,26 @@ func (a *App) Persist() (err error) {
 	return
 }
 
+func (a *App) MessagesInit(messages ...types.Message) *App {
+	for _, message := range messages {
+		a.messages.Add(message)
+	}
+	return a
+}
+
+func (a *App) LanguagesInit(languages ...types.Language) *App {
+	for _, language := range languages {
+		a.languages.Add(language)
+	}
+	return a
+}
+
 func (a *App) MessagesGetList() types.Messages {
 	return a.messages
+}
+
+func (a *App) MessagesGet(messageId string) types.Message {
+	return a.messages.FindById(messageId)
 }
 
 func (a *App) MessagesAdd(languageCode, message string) error {
@@ -62,7 +90,7 @@ func (a *App) MessagesAdd(languageCode, message string) error {
 	if !hasLanguage {
 		return fmt.Errorf("%w. code = %s", errors.NotFindLanguage, languageCode)
 	}
-	item := domain.CreateMessage(languageCode, message)
+	item := domain.CreateMessage(languageCode, message, a.timeNow.Now())
 	a.messages.Add(item)
 	return nil
 }
@@ -81,7 +109,7 @@ func (a *App) MessagesTranslate(languageCode, messageId, message string) error {
 	if hasTranslate {
 		return fmt.Errorf("%w. code = %s", errors.MessageHasTranslate, languageCode)
 	}
-	item.AddLanguage(languageCode, message)
+	item.AddLanguage(languageCode, message, a.timeNow.Now())
 	return nil
 }
 

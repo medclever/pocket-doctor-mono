@@ -20,10 +20,10 @@ func InitMessage(data types.MessageData) types.Message {
 	return &message
 }
 
-func CreateMessage(languageCode, text string) types.Message {
+func CreateMessage(languageCode, text string, now time.Time) types.Message {
 	message := message{
 		items: []types.MessageData{
-			createMessage(languageCode, text),
+			createMessage(languageCode, text, now),
 		},
 	}
 	return &message
@@ -37,8 +37,8 @@ func (m *message) InitLanguage(data types.MessageData) {
 	m.items = append(m.items, data)
 }
 
-func (m *message) AddLanguage(languageCode, text string) {
-	item := createMessage(languageCode, text)
+func (m *message) AddLanguage(languageCode, text string, now time.Time) {
+	item := createMessage(languageCode, text, now)
 	item.MessageId = m.id
 	m.items = append(m.items, item)
 }
@@ -70,11 +70,11 @@ func (m *message) ExportData() []types.MessageData {
 	return m.items
 }
 
-func createMessage(languageCode, text string) types.MessageData {
+func createMessage(languageCode, text string, now time.Time) types.MessageData {
 	return types.MessageData{
 		MessageId:    utils.GenereateUid(10),
 		Message:      text,
 		LanguageCode: languageCode,
-		DateCreate:   time.Now().Format(time.DateTime),
+		DateCreate:   now.Format(time.DateTime),
 	}
 }
