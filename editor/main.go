@@ -5,6 +5,7 @@ import (
 	"editor/app"
 	"editor/cmd/languages"
 	"editor/cmd/messages"
+	"editor/cmd/ui"
 	"log"
 	"os"
 
@@ -18,6 +19,7 @@ func main() {
 		Commands: []*cli.Command{
 			messages.New(app),
 			languages.New(app),
+            ui.New(app),
 		},
 	}
 	if err := c.Run(context.Background(), os.Args); err != nil {
