@@ -2,12 +2,12 @@ package messages
 
 import (
 	"context"
-	"editor/app"
+	"editor/app/types"
 
 	"github.com/urfave/cli/v3"
 )
 
-func translateCommand(app *app.App) *cli.Command {
+func translateCommand(app types.App) *cli.Command {
 	return &cli.Command{
 		Name:        "translate",
 		Description: "translate --lang=ru -id=<message_id> <message>",

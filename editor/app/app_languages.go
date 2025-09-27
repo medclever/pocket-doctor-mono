@@ -5,7 +5,7 @@ import (
 	"editor/app/types"
 )
 
-func (a *App) LanguagesInit(languages ...types.Language) *App {
+func (a *App) LanguagesInit(languages ...types.Language) types.App {
 	for _, language := range languages {
 		a.languages.Add(language)
 	}

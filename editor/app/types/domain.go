@@ -12,12 +12,13 @@ type MessageData struct {
 type Message interface {
 	GetId() string
 	InitTranslate(data MessageData)
-	HasTranslate(languageCode string) bool
 	AddTranslate(languageCode, text string, now time.Time)
+	HasTranslate(languageCode string) bool
 	View() string
 	ExportData() []MessageData
 }
 type Messages interface {
+	HasById(messageId string) bool
 	FindById(messageId string) Message
 	Add(message Message)
 	GetMessages() []Message

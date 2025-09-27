@@ -2,14 +2,14 @@ package ui
 
 import (
 	"context"
-	"editor/app"
+	"editor/app/types"
 	"fmt"
 
 	"github.com/rivo/tview"
 	"github.com/urfave/cli/v3"
 )
 
-func New(app *app.App) *cli.Command {
+func New(app types.App) *cli.Command {
 	return &cli.Command{
 		Name: "ui",
 		Action: func(ctx context.Context, cmd *cli.Command) error {

@@ -7,7 +7,7 @@ import (
 	"fmt"
 )
 
-func (a *App) MessagesInit(messages ...types.Message) *App {
+func (a *App) MessagesInit(messages ...types.Message) types.App {
 	for _, message := range messages {
 		a.messages.Add(message)
 	}

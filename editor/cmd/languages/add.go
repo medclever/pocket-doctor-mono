@@ -2,13 +2,13 @@ package languages
 
 import (
 	"context"
-	"editor/app"
+	"editor/app/types"
 	"errors"
 
 	"github.com/urfave/cli/v3"
 )
 
-func addCommand(app *app.App) *cli.Command {
+func addCommand(app types.App) *cli.Command {
 	return &cli.Command{
 		Name:        "add",
 		Description: "add <language code> <name>",

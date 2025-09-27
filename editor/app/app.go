@@ -18,7 +18,7 @@ type App struct {
 	languageRepository types.LanguageRepository
 }
 
-func New() *App {
+func New() types.App {
 	rootPath := "./data"
 	messageRepository := repositories.NewMessageRepo(rootPath)
 	languageRepository := repositories.NewLanguageRepo(rootPath)
@@ -32,7 +32,7 @@ func New() *App {
 	return &app
 }
 
-func (a *App) SetTimeNow(timeNow types.TimeNow) *App {
+func (a *App) SetTimeNow(timeNow types.TimeNow) types.App {
 	a.timeNow = timeNow
 	return a
 }

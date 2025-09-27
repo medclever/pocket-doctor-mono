@@ -12,6 +12,10 @@ func InitMessages(entyties []types.Message) types.Messages {
 	}
 }
 
+func (m *messages) HasById(messageId string) bool {
+	return m.FindById(messageId) != nil
+}
+
 func (m *messages) FindById(messageId string) types.Message {
 	for _, message := range m.messages {
 		if message.GetId() == messageId {
