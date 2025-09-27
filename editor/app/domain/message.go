@@ -65,15 +65,20 @@ func (m *message) HasTranslate(languageCode string) bool {
 	return m.GetTranslate(languageCode) != nil
 }
 
-func (m *message) View() string {
+func (m *message) View(languageCode string) string {
 	text := ""
-	for _, item := range m.items {
-		text += fmt.Sprintf("id: %s, language_code: %s, date_create: %s\n",
-			item.MessageId,
-			item.LanguageCode,
-			item.DateCreate,
-		)
-		text += item.Message + "\n"
+	item := m.GetTranslate(languageCode)
+	if item != nil {
+		text = item.Message
+	}
+	return text
+}
+
+func (m *message) Meta(languageCode string) string {
+	text := ""
+	item := m.GetTranslate(languageCode)
+	if item != nil {
+		text = fmt.Sprintf("id: %s, lang_code: %s, date_create: %s", item.MessageId, item.LanguageCode, item.DateCreate)
 	}
 	return text
 }

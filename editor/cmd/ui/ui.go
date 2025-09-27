@@ -3,7 +3,7 @@ package ui
 import (
 	"context"
 	"editor/app/types"
-	"fmt"
+	"editor/app/utils"
 
 	"github.com/rivo/tview"
 	"github.com/urfave/cli/v3"
@@ -11,17 +11,26 @@ import (
 
 func New(app types.App) *cli.Command {
 	return &cli.Command{
-		Name: "ui",
+		Name:        "ui",
+		Description: "ui --lang=ru",
+		Flags: []cli.Flag{
+			&cli.StringFlag{
+				Name:     "lang",
+				Value:    "ru",
+				Usage:    "language for the greeting",
+				Required: true,
+			},
+		},
 		Action: func(ctx context.Context, cmd *cli.Command) error {
-			box := tview.NewBox().SetBorder(true).SetTitle("Hello, world!")
+			languageCode := cmd.String("lang")
 			list := tview.NewList()
-			for i := range 30 {
-				list.AddItem(fmt.Sprint(i), "", '1', nil)
+			for i, message := range app.MessagesGetList().GetMessages() {
+				position := utils.IntToRune(i + 1)
+				title := message.View(languageCode)
+				meta := message.Meta(languageCode)
+				list.AddItem(title, meta, position, nil)
 			}
-			flex := tview.NewFlex().
-				AddItem(list, 0, 1, true).
-				AddItem(box, 0, 1, true)
-			if err := tview.NewApplication().SetRoot(flex, true).Run(); err != nil {
+			if err := tview.NewApplication().SetRoot(list, true).Run(); err != nil {
 				return err
 			}
 			return nil

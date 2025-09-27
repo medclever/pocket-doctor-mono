@@ -18,7 +18,8 @@ type Message interface {
 	InitTranslate(data MessageData)
 	AddTranslate(languageCode, text string, now time.Time)
 	HasTranslate(languageCode string) bool
-	View() string
+	View(languageCode string) string
+	Meta(languageCode string) string
 	ExportData() []MessageData
 }
 type Messages interface {
