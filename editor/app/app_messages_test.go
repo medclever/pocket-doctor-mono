@@ -76,3 +76,15 @@ func Test_Messages_Translate_Has_Already_Translate(t *testing.T) {
 	err := app.MessagesTranslate("mes1", "en", "Message 1")
 	assert.ErrorIs(err, errors.MessageHasTranslate)
 }
+
+func Test_Messages_Edit_Success(t *testing.T) {
+	assert := assert.New(t)
+	app := app.New()
+	app.LanguagesInit(lang("ru"), lang("en")).
+		MessagesInit(message("mes1", "ru", "Сообщение 1")).
+		SetTimeNow(timeNow)
+
+	err := app.MessagesEdit("mes1", "ru", "Сообщение 1 редактированное")
+	assert.Equal("Сообщение 1 редактированное", app.MessagesGet("mes1").GetTranslate("ru").Message)
+	assert.Nil(err)
+}

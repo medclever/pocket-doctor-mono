@@ -3,14 +3,15 @@ package messages
 import (
 	"context"
 	"editor/app/types"
+	"errors"
 
 	"github.com/urfave/cli/v3"
 )
 
-func translateCommand(app types.App) *cli.Command {
+func editCommand(app types.App) *cli.Command {
 	return &cli.Command{
-		Name:        "translate",
-		Description: "translate --lang=ru -id=<message_id> <message>",
+		Name:        "edit",
+		Description: "edit --lang=ru id=messageId <message text>",
 		Flags: []cli.Flag{
 			&cli.StringFlag{
 				Name:     "lang",
@@ -26,10 +27,12 @@ func translateCommand(app types.App) *cli.Command {
 			},
 		},
 		Action: func(ctx context.Context, cmd *cli.Command) error {
-			languageCode := cmd.String("lang")
+			if cmd.Args().Len() < 1 {
+				return errors.New("Yor should receive message param")
+			}
 			messageId := cmd.String("id")
-			message := FullMessage(cmd)
-			err := app.MessagesTranslate(messageId, languageCode, message)
+			languageCode := cmd.String("lang")
+			err := app.MessagesEdit(messageId, languageCode, FullMessage(cmd))
 			if err != nil {
 				return err
 			}

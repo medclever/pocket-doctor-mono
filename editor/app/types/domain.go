@@ -1,6 +1,8 @@
 package types
 
-import "time"
+import (
+	"time"
+)
 
 // Message
 type MessageData struct {
@@ -11,6 +13,8 @@ type MessageData struct {
 }
 type Message interface {
 	GetId() string
+	Edit(languageCode, text string)
+	GetTranslate(languageCode string) *MessageData
 	InitTranslate(data MessageData)
 	AddTranslate(languageCode, text string, now time.Time)
 	HasTranslate(languageCode string) bool

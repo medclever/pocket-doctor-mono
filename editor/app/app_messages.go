@@ -2,9 +2,7 @@ package app
 
 import (
 	"editor/app/domain"
-	"editor/app/errors"
 	"editor/app/types"
-	"fmt"
 )
 
 func (a *App) MessagesInit(messages ...types.Message) types.App {
@@ -23,28 +21,28 @@ func (a *App) MessagesGet(messageId string) types.Message {
 }
 
 func (a *App) MessagesAdd(languageCode, message string) error {
-	hasLanguage := a.languages.HasByCode(languageCode)
-	if !hasLanguage {
-		return fmt.Errorf("%w. code = %s", errors.LanguageNotFind, languageCode)
+	if err := a.validateMessageAdd(languageCode); err != nil {
+		return err
 	}
 	item := domain.CreateMessage(languageCode, message, a.timeNow.Now())
 	a.messages.Add(item)
 	return nil
 }
 
-func (a *App) MessagesTranslate(messageId, languageCode, message string) error {
-	hasLanguage := a.languages.HasByCode(languageCode)
-	if !hasLanguage {
-		return fmt.Errorf("%w. code = %s", errors.LanguageNotFind, languageCode)
+func (a *App) MessagesEdit(messageId, languageCode, message string) error {
+	if err := a.validateMessageEdit(messageId, languageCode); err != nil {
+		return err
 	}
 	item := a.messages.FindById(messageId)
-	if item == nil {
-		return fmt.Errorf("%w. id = %s", errors.MessageNotFind, messageId)
+	item.Edit(languageCode, message)
+	return nil
+}
+
+func (a *App) MessagesTranslate(messageId, languageCode, message string) error {
+	if err := a.validateMessageTranslate(messageId, languageCode); err != nil {
+		return err
 	}
-	hasTranslate := item.HasTranslate(languageCode)
-	if hasTranslate {
-		return fmt.Errorf("%w. code = %s", errors.MessageHasTranslate, languageCode)
-	}
+	item := a.messages.FindById(messageId)
 	item.AddTranslate(languageCode, message, a.timeNow.Now())
 	return nil
 }

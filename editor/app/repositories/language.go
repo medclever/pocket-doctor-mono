@@ -42,7 +42,7 @@ func (r *languageRepository) RestoreAll() (languages types.Languages, err error)
 
 func (r *languageRepository) PersistAll(languages types.Languages) (err error) {
 	utils.CreateFileIfNotExist(r.path)
-	data, err := json.Marshal(languages.ExportData())
+	data, err := json.MarshalIndent(languages.ExportData(), "", "\t")
 	if err != nil {
 		return
 	}

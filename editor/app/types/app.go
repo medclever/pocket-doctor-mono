@@ -13,5 +13,6 @@ type App interface {
 	MessagesGetList() Messages
 	MessagesGet(messageId string) Message
 	MessagesAdd(languageCode, message string) error
+	MessagesEdit(messageId, languageCode, message string) error
 	MessagesTranslate(messageId, languageCode, message string) error
 }

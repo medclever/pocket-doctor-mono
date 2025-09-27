@@ -12,6 +12,7 @@ func New(app types.App) *cli.Command {
 		Commands: []*cli.Command{
 			listCommand(app),
 			addCommand(app),
+			editCommand(app),
 			translateCommand(app),
 		},
 	}

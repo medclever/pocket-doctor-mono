@@ -50,7 +50,7 @@ func (r *messageRepository) RestoreAll() (messages types.Messages, err error) {
 
 func (r *messageRepository) PersistAll(messages types.Messages) (err error) {
 	utils.CreateFileIfNotExist(r.path)
-	data, err := json.Marshal(messages.ExportData())
+	data, err := json.MarshalIndent(messages.ExportData(), "", "\t")
 	if err != nil {
 		return
 	}

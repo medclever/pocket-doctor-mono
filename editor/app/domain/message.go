@@ -38,25 +38,37 @@ func (m *message) InitTranslate(data types.MessageData) {
 }
 
 func (m *message) AddTranslate(languageCode, text string, now time.Time) {
-	item := createMessage(languageCode, text, now)
-	item.MessageId = m.id
-	m.items = append(m.items, item)
+	if !m.HasTranslate(languageCode) {
+		item := createMessage(languageCode, text, now)
+		item.MessageId = m.id
+		m.items = append(m.items, item)
+	}
+}
+
+func (m *message) Edit(languageCode, text string) {
+	item := m.GetTranslate(languageCode)
+	if item != nil {
+		item.Message = text
+	}
+}
+
+func (m *message) GetTranslate(languageCode string) *types.MessageData {
+	for i, item := range m.items {
+		if item.LanguageCode == languageCode {
+			return &m.items[i]
+		}
+	}
+	return nil
 }
 
 func (m *message) HasTranslate(languageCode string) bool {
-	for _, item := range m.items {
-		if item.LanguageCode == languageCode {
-			return true
-		}
-	}
-	return false
+	return m.GetTranslate(languageCode) != nil
 }
 
 func (m *message) View() string {
 	text := ""
-	fmt.Println(m.items)
 	for _, item := range m.items {
-		text = fmt.Sprintf("id: %s, language_code: %s, date_create: %s\n",
+		text += fmt.Sprintf("id: %s, language_code: %s, date_create: %s\n",
 			item.MessageId,
 			item.LanguageCode,
 			item.DateCreate,
