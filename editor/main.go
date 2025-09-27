@@ -19,7 +19,7 @@ func main() {
 		Commands: []*cli.Command{
 			messages.New(app),
 			languages.New(app),
-            ui.New(app),
+			ui.New(app),
 		},
 	}
 	if err := c.Run(context.Background(), os.Args); err != nil {

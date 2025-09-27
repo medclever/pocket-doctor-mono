@@ -55,6 +55,17 @@ func Test_Messages_Translate_Success(t *testing.T) {
 	assert.Nil(err)
 }
 
+func Test_Messages_Translate_Message_Not_Found(t *testing.T) {
+	assert := assert.New(t)
+	app := app.New()
+	app.LanguagesInit(lang("ru"), lang("en")).
+		MessagesInit(message("mes1", "ru", "Сообщение 1")).
+		SetTimeNow(timeNow)
+
+	err := app.MessagesTranslate("en", "mes2", "Message 1")
+	assert.ErrorIs(err, errors.MessageNotFind)
+}
+
 func Test_Messages_Translate_Language_Not_Found(t *testing.T) {
 	assert := assert.New(t)
 	app := app.New()
@@ -63,7 +74,7 @@ func Test_Messages_Translate_Language_Not_Found(t *testing.T) {
 		SetTimeNow(timeNow)
 
 	err := app.MessagesTranslate("en", "mes1", "Message 1")
-	assert.ErrorIs(err, errors.NotFindLanguage)
+	assert.ErrorIs(err, errors.LanguageNotFind)
 }
 
 func Test_Messages_Translate_Has_Already_Translate(t *testing.T) {
