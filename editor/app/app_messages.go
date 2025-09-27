@@ -32,7 +32,7 @@ func (a *App) MessagesAdd(languageCode, message string) error {
 	return nil
 }
 
-func (a *App) MessagesTranslate(languageCode, messageId, message string) error {
+func (a *App) MessagesTranslate(messageId, languageCode, message string) error {
 	hasLanguage := a.languages.HasByCode(languageCode)
 	if !hasLanguage {
 		return fmt.Errorf("%w. code = %s", errors.LanguageNotFind, languageCode)
@@ -45,6 +45,6 @@ func (a *App) MessagesTranslate(languageCode, messageId, message string) error {
 	if hasTranslate {
 		return fmt.Errorf("%w. code = %s", errors.MessageHasTranslate, languageCode)
 	}
-	item.AddLanguage(languageCode, message, a.timeNow.Now())
+	item.AddTranslate(languageCode, message, a.timeNow.Now())
 	return nil
 }

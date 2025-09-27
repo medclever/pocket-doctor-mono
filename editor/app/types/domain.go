@@ -11,9 +11,9 @@ type MessageData struct {
 }
 type Message interface {
 	GetId() string
-	InitLanguage(data MessageData)
+	InitTranslate(data MessageData)
 	HasTranslate(languageCode string) bool
-	AddLanguage(languageCode, text string, now time.Time)
+	AddTranslate(languageCode, text string, now time.Time)
 	View() string
 	ExportData() []MessageData
 }

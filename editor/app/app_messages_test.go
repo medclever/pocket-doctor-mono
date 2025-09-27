@@ -37,7 +37,7 @@ func Test_Messages_Translate_Success(t *testing.T) {
 		MessagesInit(message("mes1", "ru", "Сообщение 1")).
 		SetTimeNow(timeNow)
 
-	err := app.MessagesTranslate("en", "mes1", "Message 1")
+	err := app.MessagesTranslate("mes1", "en", "Message 1")
 	assert.Equal(app.MessagesGet("mes1").ExportData(), []types.MessageData{
 		{
 			MessageId:    "mes1",
@@ -62,7 +62,7 @@ func Test_Messages_Translate_Message_Not_Found(t *testing.T) {
 		MessagesInit(message("mes1", "ru", "Сообщение 1")).
 		SetTimeNow(timeNow)
 
-	err := app.MessagesTranslate("en", "mes2", "Message 1")
+	err := app.MessagesTranslate("mes2", "en", "Message 1")
 	assert.ErrorIs(err, errors.MessageNotFind)
 }
 
@@ -73,20 +73,20 @@ func Test_Messages_Translate_Language_Not_Found(t *testing.T) {
 		MessagesInit(message("mes1", "ru", "Сообщение 1")).
 		SetTimeNow(timeNow)
 
-	err := app.MessagesTranslate("en", "mes1", "Message 1")
+	err := app.MessagesTranslate("mes1", "en", "Message 1")
 	assert.ErrorIs(err, errors.LanguageNotFind)
 }
 
 func Test_Messages_Translate_Has_Already_Translate(t *testing.T) {
 	assert := assert.New(t)
-	app := app.New()
-
-	mes1 := message("mes1", "ru", "Сообщение 1")
-	mes1.AddLanguage("en", "Message 1", timeNow.Now())
-	app.LanguagesInit(lang("ru"), lang("en")).
-		MessagesInit(mes1).
+	app := app.New().
+		LanguagesInit(lang("ru"), lang("en")).
 		SetTimeNow(timeNow)
 
-	err := app.MessagesTranslate("en", "mes1", "Message 1")
+	mes1 := message("mes1", "ru", "Сообщение 1")
+	mes1.AddTranslate("en", "Message 1", timeNow.Now())
+	app.MessagesInit(mes1)
+
+	err := app.MessagesTranslate("mes1", "en", "Message 1")
 	assert.ErrorIs(err, errors.MessageHasTranslate)
 }

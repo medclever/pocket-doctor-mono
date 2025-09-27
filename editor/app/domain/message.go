@@ -33,11 +33,11 @@ func (m *message) GetId() string {
 	return m.id
 }
 
-func (m *message) InitLanguage(data types.MessageData) {
+func (m *message) InitTranslate(data types.MessageData) {
 	m.items = append(m.items, data)
 }
 
-func (m *message) AddLanguage(languageCode, text string, now time.Time) {
+func (m *message) AddTranslate(languageCode, text string, now time.Time) {
 	item := createMessage(languageCode, text, now)
 	item.MessageId = m.id
 	m.items = append(m.items, item)

@@ -39,7 +39,7 @@ func (r *messageRepository) RestoreAll() (messages types.Messages, err error) {
 	for _, messageData := range messagesData {
 		item := messages.FindById(messageData.MessageId)
 		if item != nil {
-			item.InitLanguage(messageData)
+			item.InitTranslate(messageData)
 			continue
 		}
 		item = domain.InitMessage(messageData)
