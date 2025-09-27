@@ -2,10 +2,10 @@ package app_test
 
 import (
 	"editor/app"
-	"editor/app/domain"
 	"editor/app/errors"
 	"editor/app/types"
 	"editor/app/utils"
+	"editor/app/utils/test"
 	"testing"
 
 	"github.com/stretchr/testify/assert"
@@ -13,22 +13,8 @@ import (
 
 var date = "2025-01-01 00:00:00"
 var timeNow = utils.NewTimeNowTest(date)
-
-func lang(code string) types.Language {
-	return domain.InitLanguage(types.LanguageData{
-		Code:       code,
-		Name:       code,
-		DateCreate: date,
-	})
-}
-func message(id, languageCode, text string) types.Message {
-	return domain.InitMessage(types.MessageData{
-		MessageId:    id,
-		Message:      text,
-		LanguageCode: languageCode,
-		DateCreate:   date,
-	})
-}
+var lang = test.EnsureLang(date)
+var message = test.EnsureMessage(date)
 
 func Test_Messages_Translate_Success(t *testing.T) {
 	assert := assert.New(t)
