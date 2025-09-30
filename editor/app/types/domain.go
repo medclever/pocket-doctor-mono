@@ -1,8 +1,48 @@
 package types
 
 import (
+	"encoding/json"
 	"time"
 )
+
+type ArticleData struct {
+	ArticleId  ArticleId         `json:"artice_id"`
+	Title      MessageParams     `json:"title"`
+	Necessary  []ArticleItemData `json:"necessary"`
+	Possible   []ArticleItemData `json:"possible"`
+	MustNot    []ArticleItemData `json:"must_not"`
+	Important  []ArticleItemData `json:"important"`
+	Text       []ArticleItemData `json:"text"`
+	DateCreate string            `json:"date_create"`
+}
+type ArticleItemData struct {
+	ItemId   ItemId          `json:"item_id"`
+	ItemType ItemType        `json:"item_type"`
+	Params   json.RawMessage `json:"params"`
+}
+type MessageParams struct {
+	MessageId string `json:"message_id"`
+}
+type GalleryParams struct {
+	ImagesIds []string `json:"image_ids"`
+}
+type LinkParams struct {
+	ArticleId string `json:"article_id"`
+}
+type Article interface {
+	GetId() ArticleId
+	AddItem(afterId *ItemId, place PlaceType, itemType ItemType, params any)
+	EditItem(itemId ItemId, params any)
+	DeleteItem(itemId ItemId)
+	View(languageCode string) string
+	ExportData() []ArticleData
+}
+type ArticleItem interface {
+	GetId() ItemId
+	Edit(params any)
+	View(languageCode string) string
+	ExportData() []ArticleItemData
+}
 
 // Message
 type MessageData struct {
