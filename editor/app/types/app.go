@@ -5,6 +5,10 @@ type App interface {
 	Init()
 	Persist() (err error)
 	//
+	ArticlesInit(articles ...Article) App
+	ArticlesGetList() Articles
+	ArticlesAdd(languageCode string, afterId *ArticleId, title string)
+	//
 	LanguagesInit(languages ...Language) App
 	LanguagesGetList() Languages
 	LanguagesAdd(code, name string)

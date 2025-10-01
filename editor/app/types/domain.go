@@ -43,6 +43,13 @@ type ArticleItem interface {
 	View(languageCode string) string
 	ExportData() []ArticleItemData
 }
+type Articles interface {
+	HasById(articleId ArticleId) bool
+	FindById(articleId ArticleId) Article
+	Add(article Article)
+	GetArticles() []Article
+	ExportData() []ArticleData
+}
 
 // Message
 type MessageData struct {

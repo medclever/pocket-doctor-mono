@@ -12,6 +12,8 @@ import (
 
 type App struct {
 	timeNow            types.TimeNow
+	articles           types.Articles
+	articleRepository  types.ArticleRepository
 	messages           types.Messages
 	messageRepository  types.MessageRepository
 	languages          types.Languages
@@ -20,12 +22,15 @@ type App struct {
 
 func New() types.App {
 	rootPath := "./data"
+	articleRepository := repositories.NewArticleRepo(rootPath)
 	messageRepository := repositories.NewMessageRepo(rootPath)
 	languageRepository := repositories.NewLanguageRepo(rootPath)
 	app := App{
 		timeNow:            utils.NewTimeNowDefault(),
+		articles:           domain.InitArticles([]types.Article{}),
 		messages:           domain.InitMessages([]types.Message{}),
 		languages:          domain.InitLanguages([]types.Language{}),
+		articleRepository:  articleRepository,
 		messageRepository:  messageRepository,
 		languageRepository: languageRepository,
 	}
@@ -38,6 +43,10 @@ func (a *App) SetTimeNow(timeNow types.TimeNow) types.App {
 }
 
 func (a *App) Init() {
+	articles, err := a.articleRepository.RestoreAll()
+	PrintErrorAndExit(err)
+	a.articles = articles
+
 	messages, err := a.messageRepository.RestoreAll()
 	PrintErrorAndExit(err)
 	a.messages = messages
@@ -49,6 +58,9 @@ func (a *App) Init() {
 
 func (a *App) Persist() (err error) {
 	errs := []error{}
+
+	err = a.articleRepository.PersistAll(a.articles)
+	errs = append(errs, err)
 
 	err = a.messageRepository.PersistAll(a.messages)
 	errs = append(errs, err)
