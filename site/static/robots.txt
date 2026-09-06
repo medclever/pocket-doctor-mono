@@ -1,0 +1,2 @@
+User-agent: *
+Sitemap: https://pocketdoctor.medclever.com/sitemap.xml

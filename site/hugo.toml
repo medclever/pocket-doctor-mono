@@ -1,4 +1,6 @@
-baseURL = "/"
+# Сайт отдаётся по https за TLS-прокси: canonical и sitemap должны
+# совпадать с реальным протоколом (относительный baseURL ломал sitemap).
+baseURL = "https://pocketdoctor.medclever.com/"
 defaultContentLanguage = "ru"
 defaultContentLanguageInSubdir = false
 title = "Карманный доктор"
