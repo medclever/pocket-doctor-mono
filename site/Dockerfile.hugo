@@ -1,0 +1,3 @@
+# Версия Hugo передаётся снаружи: make hugo (HUGO_VERSION из Makefile)
+ARG HUGO_VERSION
+FROM hugomods/hugo:${HUGO_VERSION}

@@ -1,0 +1,19 @@
+baseURL = "/"
+defaultContentLanguage = "ru"
+defaultContentLanguageInSubdir = false
+title = "Карманный доктор"
+disableKinds = ["taxonomy", "term", "RSS"]
+
+# Лендинги — дословный HTML с живого сайта (контент целиком в content/*.html)
+[security]
+  allowContent = ['^text/html$']
+
+[languages.ru]
+  locale = "ru-RU"
+  weight = 1
+  contentDir = "content/ru"
+
+[languages.en]
+  locale = "en"
+  weight = 2
+  contentDir = "content/en"
