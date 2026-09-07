@@ -75,17 +75,17 @@ docker run -d --name pd-site -p 8080:80 cr.yandex/crpagjmg3tp0j9f768ui/pocketdoc
 Google Analytics со старого сайта не переносился (Universal Analytics больше не работает).
 
 Цели, отправляемые из `static/js/main.js` (функции `onTarget*`, вызываются инлайновыми
-`onclick` в разметке): `GO_TO_STORE`, `GO_TO_GOOGLE_PLAY`, `GO_TO_APPSTORE`,
-`READ_PAYMENT`, `READ_PAYMENT_GOOGLE_PLAY`, `READ_PAYMENT_APPSTORE`.
+`onclick` в разметке): `GO_TO_STORE`, `GO_TO_GOOGLE_PLAY`, `GO_TO_APPSTORE`.
 
 ## Отличия от старого сайта
 
 - Google Fonts подключается по `https` (по `http` современные браузеры шрифты
   со старого сайта не загружали — заголовки отображались запасным шрифтом).
-- jQuery не переносился: аккордеон «Как приобрести» и отправка целей написаны
-  на чистом JS (`static/js/main.js`).
+- jQuery не переносился: отправка целей написана на чистом JS (`static/js/main.js`).
 - Функция переключения вкладок оплаты `paymentShowTab` была мёртвым кодом
   (кнопок-табов на странице нет, обе вкладки видны одновременно) — не перенесена.
+- Раздел «Как приобрести» (инструкции по оплате, аккордеон) удалён вместе
+  с обработчиком аккордеона и целями `READ_PAYMENT*`.
 
 ## Как добавить статью
 
