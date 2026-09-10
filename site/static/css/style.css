@@ -85,27 +85,30 @@ ul>li { list-style-type: none; }
     margin-bottom: -35px;
 }
 
-.wrapper { width: 1000px; margin: 0 auto 0; }
+.wrapper { width: auto; max-width: 1000px; margin: 0 auto 0; }
+
+img { max-width: 100%; height: auto; }
 
 .header { background: url(../images/jeans.jpg); padding-bottom: 3px; position: relative; }
 .header .wrap { background: url(../images/fon_shadow_line.png) no-repeat;
     background-position: bottom; padding-bottom: 8px; }
-.header .wrap2 { border-bottom: 2px dashed #F3EFBB; padding: 0px 10px 10px 20px;
-    margin-bottom: -7px; }
+.header .wrap2 { border-bottom: 2px dashed #F3EFBB; padding: 0px 16px 10px 16px;
+    margin-bottom: -7px; display: flex; align-items: center; justify-content: space-between;
+    flex-wrap: wrap; }
 .header h1,
 .header .header__title
-{ margin: 0; font-family: 'Lobster'; color: #F3EFBB; float: left; text-shadow: 5px 1px 0px #1E3253;
+{ margin: 0; font-family: 'Lobster'; color: #F3EFBB; text-shadow: 5px 1px 0px #1E3253;
     font-size: 60px; text-decoration: none; }
 .header .h1-small { font-size: 27px; display: block; }
 .header .h1-big { font-size: 60px; display: block; }
-.header .lang-switcher { float: right; margin: 14px 8px -2px 0; }
+.header .lang-switcher { display: flex; gap: 8px; margin: 16px 0 0 auto; flex-shrink: 0; }
 
 .main-info .iconm-doctor { width: 250px; float: left; margin: -5px 20px 10px 0px;
     }
 .main-info-start { background: url(../images/fon_bloknot_empty.png) repeat-y; height: 32px; }
 .main-info-content {
     background: url(../images/fon_bloknot_line.png) repeat-y;
-    padding: 0 20px;
+    padding: 0 20px 0 55px;
     display: inline-block;
 }
 .main-info-content.lang-ru { font-size: 21px; }
@@ -119,16 +122,15 @@ ul>li { list-style-type: none; }
 .main-info .contact i, .main-info .contact a { line-height: 72px; vertical-align: middle; }
 
 /* BLOCS */
-.block { padding: 35px; }
-.block.bg-wave { padding-top: 10px; padding-bottom: 10px; margin: 17px 0; }
+.block { padding: 35px; margin: 17px 0; }
+.block.bg-wave { padding-top: 10px; padding-bottom: 10px; }
 .block h2 { margin-bottom: 35px; }
-.available-block { padding-bottom: 45px; }
 .available-block p { text-align: center; margin-top: 15px; }
 .available-block .iconm-googleplay { margin-right: 60px; }
 
 .use-block ul { padding-left: 200px;  }
 .use-block i { vertical-align: middle; margin-right: 25px;  }
-.use-block li { margin-bottom: 15px; }
+.use-block li { display: flex; align-items: center; margin-bottom: 15px; }
 
 .content-block {  }
 .content-block ul { margin: 0; padding: 0; }
@@ -138,7 +140,7 @@ ul>li { list-style-type: none; }
 
 .features-block i { vertical-align: middle; margin-right: 25px; }
 .features-block ul { float: left; width: 460px; padding: 0; margin: 0; }
-.features-block ul>li {  margin-bottom: 30px; }
+.features-block ul>li { display: flex; align-items: center; margin-bottom: 30px; }
 
 .athors-block img { width: 250px; }
 .athors-block .right-content,
@@ -217,3 +219,109 @@ ul>li { list-style-type: none; }
 }
 
 .gallery-item { margin: 5px 20px 20px 0; }
+
+/* ===== Адаптивность ===== */
+
+/* Планшет / узкое окно: фоновые картинки 1000px масштабируем под ширину блока */
+@media (max-width: 1020px) {
+    .bg-wave::before, .bg-wave::after { width: 100%; max-width: 1000px; background-size: 100% 100%; }
+    .main-info-start, .main-info-content, .main-info-end { background-size: 100% auto; }
+    .header .wrap { background-size: 100% 100%; }
+    .content-block .left-content, .content-block .right-content,
+    .athors-block .left-content, .athors-block .right-content { width: 48%; }
+    .features-block ul { float: none; width: auto; }
+}
+
+/* Планшет портрет / большой телефон: одна колонка, иконки меньше */
+@media (max-width: 768px) {
+    html, body { font-size: 22px; }
+    h2 { font-size: 28px; }
+    .team { font-size: 22px; }
+
+    .header h1, .header .header__title { font-size: 36px; text-shadow: 3px 1px 0px #1E3253; }
+    .header .h1-big { font-size: 36px; }
+    .header .h1-small { font-size: 20px; }
+
+    /* Флаги x0.5: 50x50, спрайт 250x500 */
+    .iconm-lang-en, .iconm-lang-ru { width: 50px; height: 50px; background-size: 250px 500px; }
+    .iconm-lang-en { background-position: 0 -50px; }
+    .iconm-lang-en.active, .iconm-lang-en:hover { background-position: 0 0; }
+    .iconm-lang-ru { background-position: -50px -50px; }
+    .iconm-lang-ru.active, .iconm-lang-ru:hover { background-position: -50px 0; }
+
+    .main-info .iconm-doctor { float: none; display: block; margin: 0 auto 15px; }
+    .main-info-content { padding: 0 32px 0; }
+    .main-info-content.lang-ru { font-size: 18px; }
+    .main-info .contact { margin-left: 0; text-align: center; }
+    .main-info .contact i, .main-info .contact a { line-height: 48px; }
+    .iconm-email { width: 42px; height: 42px; background-size: 300px 600px; background-position: -180px 0; }
+
+    .use-block ul { padding-left: 0; }
+    /* Важно: специфичность не ниже, чем у 48%-колонок из @media 1020px */
+    .left-content, .right-content { float: none; width: auto; }
+    .content-block .left-content, .content-block .right-content,
+    .athors-block .left-content, .athors-block .right-content { float: none; width: auto; }
+    .liter-block ul { padding-left: 24px; }
+
+    .available-block p { display: flex; flex-direction: column; align-items: center; gap: 15px; margin-top: 10px; }
+    .available-block .iconm-googleplay { margin: 0; }
+
+    body { background-attachment: scroll; }
+    .block { padding: 25px; margin: 12px 0; }
+    .block h2 { margin-bottom: 22px; }
+    .use-block li, .features-block ul>li { margin-bottom: 15px; }
+    .content-block li { line-height: 1.45; }
+}
+
+/* Телефоны */
+@media (max-width: 480px) {
+    html, body { font-size: 20px; }
+    h2 { font-size: 24px; }
+    h2 i { margin-right: 6px; }
+    .team { font-size: 20px; }
+
+    .header .wrap2 { flex-direction: column; align-items: center; text-align: center;
+        padding: 12px 16px 14px; }
+    .header h1, .header .header__title { font-size: 32px; text-shadow: 2px 1px 0px #1E3253; }
+    .header .h1-big { font-size: 38px; }
+    .header .h1-small { font-size: 18px; }
+    .header .lang-switcher { justify-content: center; margin: 12px 0 -47px 164px; }
+
+    .block { padding: 20px 16px; margin: 12px 0; }
+    .block h2 { margin-bottom: 18px; }
+    .main-info-content { padding: 0 32px; }
+
+    .available-block p { gap: 12px; }
+    .use-block li, .features-block ul>li { margin-bottom: 12px; }
+    .content-block li { margin-bottom: 6px; }
+
+    .athors-block img { width: 220px; }
+    .athors-block .left-content { margin-bottom: 25px; }
+
+    /* Бейджи сторов x0.75: 274x91, спрайт 375x750 */
+    .iconm-appstore { width: 274px; height: 91px; background-size: 375px 750px; background-position: 0 -262.5px; }
+    .iconm-googleplay { width: 274px; height: 91px; background-size: 375px 750px; background-position: 0 -375px; }
+
+    /* Малые иконки x0.7: 48x48, спрайт 350x700 */
+    .iconm-download { width: 48px; height: 48px; background-size: 350px 700px; background-position: -280px -70px; }
+    .iconm-howused { width: 48px; height: 48px; background-size: 350px 700px; background-position: -280px 0; }
+    .iconm-content { width: 48px; height: 48px; background-size: 350px 700px; background-position: -140px -140px; }
+    .iconm-authors { width: 48px; height: 48px; background-size: 350px 700px; background-position: -140px -70px; }
+    .iconm-literature { width: 48px; height: 48px; background-size: 350px 700px; background-position: -140px 0; }
+    .iconm-star { width: 48px; height: 48px; background-size: 350px 700px; background-position: -210px -70px; }
+    .iconm-lights-red { width: 48px; height: 48px; background-size: 350px 700px; background-position: -280px -210px; }
+    .iconm-lights-yellow { width: 48px; height: 48px; background-size: 350px 700px; background-position: -280px -280px; }
+    .iconm-lights-green { width: 48px; height: 48px; background-size: 350px 700px; background-position: -280px -350px; }
+    .iconm-lights-important { width: 48px; height: 48px; background-size: 350px 700px; background-position: -280px -420px; }
+
+    /* Иконки «Особенностей» x0.6: 90x90, спрайт 300x600 */
+    .iconm-handphone { width: 90px; height: 90px; background-size: 300px 600px; background-position: 0 -390px; }
+    .iconm-arhiv { width: 90px; height: 90px; background-size: 300px 600px; background-position: -90px -390px; }
+    .iconm-air { width: 90px; height: 90px; background-size: 300px 600px; background-position: -90px -480px; }
+    .iconm-carmedic { width: 90px; height: 90px; background-size: 300px 600px; background-position: 0 -480px; }
+
+    .use-block i, .features-block i { margin-right: 12px; }
+
+    .main-info-end { height: 70px; }
+    .main-info-end .corner { display: none; }
+}
